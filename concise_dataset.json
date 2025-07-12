@@ -1,0 +1,83 @@
+[
+  {
+    "instruction": "What is the capital of Germany?",
+    "response": "Berlin."
+  },
+  {
+    "instruction": "Who wrote 'Hamlet'?",
+    "response": "Shakespeare."
+  },
+  {
+    "instruction": "What is 5 plus 3?",
+    "response": "8."
+  },
+  {
+    "instruction": "Define photosynthesis.",
+    "response": "Plants making food with sunlight."
+  },
+  {
+    "instruction": "What is the boiling point of water?",
+    "response": "100°C."
+  },
+  {
+    "instruction": "Who is the President of the USA?",
+    "response": "Check current news."
+  },
+  {
+    "instruction": "Should I drink more water?",
+    "response": "Yes, stay hydrated."
+  },
+  {
+    "instruction": "Is exercise good for health?",
+    "response": "Yes, daily exercise helps."
+  },
+  {
+    "instruction": "What is AI?",
+    "response": "Artificial Intelligence."
+  },
+  {
+    "instruction": "How do I boil an egg?",
+    "response": "Boil for 7–10 minutes."
+  },
+  {
+    "instruction": "Best way to sleep well?",
+    "response": "Stick to a routine."
+  },
+  {
+    "instruction": "Can dogs eat chocolate?",
+    "response": "No, it's toxic."
+  },
+  {
+    "instruction": "How to relieve stress?",
+    "response": "Relax and breathe deeply."
+  },
+  {
+    "instruction": "Fastest land animal?",
+    "response": "Cheetah."
+  },
+  {
+    "instruction": "What does DNA stand for?",
+    "response": "Deoxyribonucleic acid."
+  },
+  {
+    "instruction": "Where is the Great Wall?",
+    "response": "China."
+  },
+  {
+    "instruction": "Meaning of 'Hola'?",
+    "response": "Hello in Spanish."
+  },
+  {
+    "instruction": "How long is a marathon?",
+    "response": "42.195 km."
+  },
+  {
+    "instruction": "Largest ocean?",
+    "response": "Pacific Ocean."
+  },
+  {
+    "instruction": "How to tie a tie?",
+    "response": "Loop, cross, pull tight."
+  }
+]
+

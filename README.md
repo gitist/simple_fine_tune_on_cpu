@@ -1,4 +1,4 @@
-# simple_fine_tune_on_cpu
+# Simple Fine Tuning on CPU
 This project shows how to fine-tune a lightweight open-source language model using [LoRA (Low-Rank Adaptation)](https://arxiv.org/abs/2106.09685).
 In order to run the code, follow these recommended steps. In our environment, we had Python 3.12 installed.
 

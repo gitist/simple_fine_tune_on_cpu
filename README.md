@@ -33,5 +33,5 @@ In order to run the code, follow these recommended steps. In our environment, we
     ```
 5. **Run the inference:**
     ```sh
-    python compare_models_2.py
+    python compare_models.py
     ```

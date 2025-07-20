@@ -2,33 +2,60 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 from peft import PeftModel
 import torch
 
-# Model ID
+# Load tokenizer
 model_id = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
-peft_model_path = "./tinyllama-lora"
-
-# Load tokenizer once
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 
-# Prompt to test
-# instruction = "What is the capital of France?"
-instruction = "Who wrote 1984"
+# Inference helper
+def generate_response(model, prompt, max_new_tokens=50):
+    inputs = tokenizer(prompt, return_tensors="pt", padding=True)
+    input_ids = inputs["input_ids"]
+    attention_mask = inputs["attention_mask"]
+
+    with torch.no_grad():
+        output = model.generate(
+            input_ids=input_ids,
+            attention_mask=attention_mask,
+            max_new_tokens=max_new_tokens,
+            do_sample=False,
+            eos_token_id=tokenizer.eos_token_id,
+            pad_token_id=tokenizer.eos_token_id
+        )
+    full_output = tokenizer.decode(output[0], skip_special_tokens=True)
+
+    # Get text after <|assistant|>
+    if "<|assistant|>" in full_output:
+        response = full_output.split("<|assistant|>\n")[1].strip()
+    else:
+        response = full_output.strip()
+
+    # Stop at first newline or period if needed
+    for stop_token in ["\n", ".", "!", "?"]:
+        if stop_token in response:
+            response = response.split(stop_token)[0].strip()
+            break
+
+    return response
+
+# Prompt
+instruction = "Where is the capital of France?"
 prompt = f"<|user|>\n{instruction}\n<|assistant|>\n"
 
-# Select device
-device = "cuda" if torch.cuda.is_available() else "cpu"
-
 # Load base model
-print("\n🔹 Base model output:")
-base_model = AutoModelForCausalLM.from_pretrained(model_id).to(device)
-base_pipe = pipeline("text-generation", model=base_model, tokenizer=tokenizer, device=0 if device == "cuda" else -1)
-base_out = base_pipe(prompt, max_new_tokens=50, do_sample=True, temperature=0.7)
-print(base_out[0]["generated_text"].replace(prompt, "").strip())
+base_model = AutoModelForCausalLM.from_pretrained(model_id)
 
-# Load fine-tuned model with LoRA
-print("\n🔸 LoRA fine-tuned model output:")
+# Load LoRA-adapted model
 lora_model = AutoModelForCausalLM.from_pretrained(model_id)
-lora_model = PeftModel.from_pretrained(lora_model, peft_model_path).to(device)
-lora_pipe = pipeline("text-generation", model=lora_model, tokenizer=tokenizer, device=0 if device == "cuda" else -1)
-lora_out = lora_pipe(prompt, max_new_tokens=50, do_sample=True, temperature=0.7)
-print(lora_out[0]["generated_text"].replace(prompt, "").strip())
+lora_model = PeftModel.from_pretrained(lora_model, "./tinyllama-lora")
 
+# Generate responses
+base_response = generate_response(base_model, prompt)
+lora_response = generate_response(lora_model, prompt)
+
+# Print results
+print("=== Base Model Response ===")
+print("Question: ",instruction)
+print("Response: ",base_response)
+print("\n=== LoRA-Finetuned Model Response ===")
+print("Question: ",instruction)
+print("Response: ",lora_response)
